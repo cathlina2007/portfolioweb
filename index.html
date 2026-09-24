@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cathlyn Rose Balibat — Portfolio</title>
+<meta name="description" content="Hi, I am Cathlyn Rose Balibat, a BSIT student who is interested in technology, volleyball, dancing and programming.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ DESIGN TOKENS — edit these to restyle the whole site ============ */
+ :root {
+    --paper: #f7eef5;        /* main background */
+    --paper-alt: #f7dbe6;    /* tab / sidebar background */
+    --ink: #2a161d;          /* primary text */
+    --ink-soft: #6b4a56;     /* secondary text */
+    --accent: #c2417a;       /* primary accent — links, headings */
+    --accent-warm: #d9738f;  /* secondary accent — binder rings, tags */
+    --rule: #e8c3d3;         /* hairline borders */
+    --card: #fff6f9;         /* card background */
+
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Inter", -apple-system, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+    --spine-width: 220px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.55;
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, .tab:focus-visible {
+    outline: 2.5px solid var(--accent-warm);
+    outline-offset: 3px;
+  }
+
+  .skip-link {
+    position: absolute; left: -999px; top: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 0.75rem 1.25rem; z-index: 100;
+    font-family: var(--font-mono); font-size: 0.85rem;
+  }
+  .skip-link:focus { left: 1rem; top: 1rem; }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.1; margin: 0; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-warm);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  /* ============ LAYOUT: binder spine (left) + content ============ */
+  .layout {
+    display: grid;
+    grid-template-columns: var(--spine-width) 1fr;
+    min-height: 100vh;
+  }
+
+  /* --- Signature element: the binder spine with punched rings + tab index --- */
+  .spine {
+    background: var(--paper-alt);
+    border-right: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem 0;
+  }
+
+  .rings {
+    position: absolute;
+    left: 18px;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    pointer-events: none;
+  }
+  .ring {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--accent-warm);
+  }
+
+  .spine-id {
+    padding: 0 1.5rem 1.5rem 3rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 1rem;
+  }
+  .spine-id .name {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    display: block;
+  }
+  .spine-id .role {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+
+  nav.index { padding-left: 3rem; padding-right: 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+  .tab {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.55rem 0.75rem;
+    border-radius: 3px 0 0 3px;
+    display: flex;
+    gap: 0.6rem;
+  }
+  .tab:hover { background: var(--card); }
+  .tab .code { color: var(--accent-warm); }
+
+  .spine-footer {
+    margin-top: auto;
+    padding: 1.5rem 1.5rem 0 3rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+  }
+
+  /* --- Mobile: spine collapses to a top bar --- */
+  @media (max-width: 780px) {
+    .layout { grid-template-columns: 1fr; }
+    .spine {
+      position: static; height: auto; flex-direction: row;
+      align-items: center; padding: 1rem; overflow-x: auto;
+    }
+    .rings { display: none; }
+    .spine-id { border-bottom: none; border-right: 1px solid var(--rule); padding: 0 1rem; margin: 0; flex-shrink: 0; }
+    nav.index { flex-direction: row; padding: 0 0 0 1rem; }
+    .spine-footer { display: none; }
+  }
+
+  main { min-width: 0; }
+
+  section {
+    padding: 5rem 4rem;
+    border-bottom: 1px solid var(--rule);
+    max-width: 900px;
+  }
+  @media (max-width: 780px) { section { padding: 3rem 1.5rem; } }
+
+  /* ============ HERO ============ */
+  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+  .hero .tagline {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 42ch;
+    margin-top: 1rem;
+  }
+  .hero-links {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    margin-top: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .hero-links a { color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+  .hero-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ============ ABOUT ============ */
+  .about p { max-width: 65ch; color: var(--ink-soft); }
+  .about p + p { margin-top: 1rem; }
+
+  /* ============ SKILLS ============ */
+  .skill-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 2rem; }
+  .skill-group h3 { font-size: 1rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 0.75rem; }
+  .skill-group ul { list-style: none; padding: 0; margin: 0; color: var(--ink-soft); }
+  .skill-group li { padding: 0.3rem 0; border-bottom: 1px dotted var(--rule); }
+
+  /* ============ PROJECTS ============ */
+  .project-grid { display: grid; gap: 1.75rem; margin-top: 2rem; }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.75rem;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 640px) { .project-card { grid-template-columns: 1fr; } }
+  .project-card img {
+    width: 100%; height: 100%; min-height: 140px;
+    object-fit: cover; border-radius: 4px;
+    border: 1px solid var(--rule);
+  }
+  .project-card h3 { font-size: 1.25rem; margin-bottom: 0.4rem; }
+  .project-card .desc { color: var(--ink-soft); font-size: 0.95rem; }
+  .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.85rem 0; }
+  .tag {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    background: var(--paper-alt); color: var(--accent-warm);
+    padding: 0.2rem 0.55rem; border-radius: 3px;
+  }
+  .project-links { font-family: var(--font-mono); font-size: 0.82rem; display: flex; gap: 1.25rem; }
+
+  /* ============ EXPERIENCE / EDUCATION TIMELINE ============ */
+  .timeline-columns {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  @media (max-width: 640px) { .timeline-columns { grid-template-columns: 1fr; gap: 2.5rem; } }
+  .timeline-column h3.col-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+  .timeline { border-left: 2px solid var(--rule); padding-left: 1.75rem; display: flex; flex-direction: column; gap: 2rem; }
+  .timeline-item { position: relative; }
+  .timeline-item::before {
+    content: ""; position: absolute; left: -2.28rem; top: 0.35rem;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent-warm);
+  }
+  .timeline-item .when { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-soft); }
+  .timeline-item h3 { font-size: 1.1rem; margin-top: 0.25rem; }
+  .timeline-item .where { color: var(--accent); font-size: 0.92rem; margin-bottom: 0.4rem; }
+  .timeline-item p { color: var(--ink-soft); font-size: 0.92rem; max-width: 60ch; }
+
+  /* ============ CONTACT / FOOTER ============ */
+  .contact { border-bottom: none; }
+  .contact p { color: var(--ink-soft); max-width: 50ch; }
+  .contact-methods { margin-top: 1.75rem; display: flex; flex-direction: column; gap: 0.6rem; font-family: var(--font-mono); font-size: 0.95rem; }
+  footer.sign-off { padding: 2rem 4rem 3rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); }
+  @media (max-width: 780px) { footer.sign-off { padding: 1.5rem; } }
+  .profile-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 1rem;
+  border: 3px solid var(--accent-warm);
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="layout">
+
+  <!-- ============ SPINE / NAVIGATION ============ -->
+  <header class="spine">
+    <div class="rings" aria-hidden="true">
+      <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+      <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+    </div>
+
+    <div class="spine-id">
+  <img class="profile-photo" src="images/pic.jpg" alt="Cathlyn Rose Balibat profile photo">
+
+  <span class="name">Cathlyn Rose Balibat</span>
+  <span class="role">Bachelor of Science in Information Technology, 2026</span>
+</div>
+
+    <nav class="index" aria-label="Section navigation">
+      <a class="tab" href="#about"><span class="code">01</span> About</a>
+      <a class="tab" href="#skills"><span class="code">02</span> Skills</a>
+      <a class="tab" href="#projects"><span class="code">03</span> Projects</a>
+      <a class="tab" href="#experience"><span class="code">04</span> Experience</a>
+      <a class="tab" href="#contact"><span class="code">05</span> Contact</a>
+    </nav>
+
+    <div class="spine-footer">
+      Last updated August 2026
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <span class="eyebrow">Portfolio — Index 00</span>
+      <h1>Cathlyn Rose Moratalla Balibat<br></h1>
+      <p class="tagline">I am a 2nd-year BSIT student interested in programming and web design. I enjoy learning new things, exploring technology, and improving my skills as I work toward becoming a web developer and programmer. Outside of studying, I enjoy playing volleyball and dancing, even if I’m still working on getting better at both.</p>
+      <div class="hero-links">
+        <a href="mailto:balibatcathlynrose715@gmail.com">Email</a>
+        <a href="#">Resume</a>
+        <a href="#">GitHub</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about">
+      <h2>About</h2>
+      <p>I am a 2nd-year BSIT student currently studying at Eastern Samar State University Main Campus. I enjoy learning how websites and applications are created and improving my skills through different projects and activities.</p>
+      <p>I am still learning and developing my abilities in technology, but I am motivated to keep improving. My goal is to become a web developer and programmer in the future.</p>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skill-groups">
+
+        <!-- DUPLICATE THIS BLOCK for each skill category -->
+        <div class="skill-group">
+          <h3>Languages</h3>
+          <ul>
+            <li>Java</li>
+            <li>C++</li>
+            <li>HTML</li>
+          </ul>
+        </div>
+
+        <div class="skill-group">
+          <h3>Tools</h3>
+          <ul>
+            <li>VS Code</li>
+            <li>XAMPP</li>
+            <li>GitHub</li>
+          </ul>
+        </div>
+
+        <div class="skill-group">
+          <h3>Other</h3>
+          <ul>
+            <li>Web Design</li>
+            <li>Creativity</li>
+          </ul>
+        </div>
+        <!-- END DUPLICATE BLOCK -->
+
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="project-grid">
+        <article class="project-card">
+          <img src="Cathlyn_Rose_Balibat_Portfolio/images/system.pic.webp" alt="Food ordering system screenshot">
+          <div>
+            <h3>Food ordering system</h3>
+            <p class="desc">A simple food ordering system that allows users to view food items, add items to cart, and manage their orders. I worked on the system's interface and basic programming.</p>
+            <div class="tags">
+              <span class="tag">C#</span>
+              <span class="tag">XAMPP</span>
+              <span class="tag">MySQL</span>
+            </div>
+            <div class="project-links">
+              <a href="#">Live demo</a>
+              <a href="#">Source</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <img src="Cathlyn_Rose_Balibat_Portfolio/images/learningweb.pic.jpg" alt="Online Learning WEB screenshot">
+          <div>
+            <h3>Student Project</h3>
+            <p class="desc">A school project where I practiced programming, interface design, and problem-solving skills.</p>
+            <div class="tags">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+            </div>
+            <div class="project-links">
+              <a href="#">Live demo</a>
+              <a href="#">Source</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCE / EDUCATION ============ -->
+    <section id="experience">
+      <h2>Experience &amp; Education</h2>
+      <div class="timeline-columns">
+
+        <!-- LEFT COLUMN: EXPERIENCE -->
+        <div class="timeline-column">
+          <h3 class="col-title">Experience</h3>
+          <div class="timeline">
+
+            <!-- DUPLICATE THIS BLOCK for each job or internship -->
+            <div class="timeline-item">
+              <span class="when">June 2026 — Present</span>
+              <h3>BSIT Student / Student Developer</h3>
+              <div class="where">School Projects</div>
+              <p>Worked on basic programming and web design project as part of my studies, gaining experience in creating simple programs and websites.</p>
+            </div>
+            <!-- END DUPLICATE BLOCK -->
+
+            <div class="timeline-item">
+              <span class="when">2025 - Present</span>
+              <h3>Student Programmer</h3>
+              <div class="where">Academic Projects</div>
+              <p>Practice programming using Java and C++ and developed problem-solving skills through different school activities and projects.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: EDUCATION -->
+        <div class="timeline-column">
+          <h3 class="col-title">Education</h3>
+          <div class="timeline">
+
+            <!-- DUPLICATE THIS BLOCK for each degree or program -->
+            <div class="timeline-item">
+              <span class="when">2025 - Present</span>
+              <h3>Bachelor of Science in Information Technology (BSIT)</h3>
+              <div class="where">Eastern Samar State University</div>
+              <p>Programming, Web Design, Database, and Information Technology.</p>
+            </div>
+            <!-- END DUPLICATE BLOCK -->
+
+            <div class="timeline-item">
+              <span class="when">2023 - 2025</span>
+              <h3>Senior High School</h3>
+              <div class="where">Taft National High School</div>
+              <p>Completed senior high school education before pursuing a Bachelor of Science in Information Technology</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="contact" id="contact">
+      <h2>Get in touch</h2>
+      <p>I am open to opportunities where I can learn and improve my skills in web development and programming. Feel free to reach out if you would like to connect or collaborate.</p>
+      <div class="contact-methods">
+        <a href="mailto:balibatcathlynrose715@gmail.com">balibatcathlynrose715@gmail.com</a>
+        <a href="#">https://www.facebook.com/chuliyx</a>
+        <a href="#">notyet</a>
+      </div>
+    </section>
+
+    <footer class="sign-off">
+      © 2026 Cathlyn Rose M. Balibat. All rights reserved.
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>
